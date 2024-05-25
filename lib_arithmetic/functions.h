@@ -33,6 +33,9 @@ class Parser {
     friend class Stack<std::string>;
 	std::string expression;
 public:
+    Parser() {
+        expression = "none";
+    }
     explicit Parser(std::string expression_) : expression(expression_) { }
 
 	std::string get_expression() const {

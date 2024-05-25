@@ -49,12 +49,18 @@ double m_tg(double x) {
 	if (abs(x) >= (M_PI / 2)) { 
 		throw std::invalid_argument("The value is invalid");
 	}
+	if (m_cos(x) == 0) {
+		throw std::logic_error("division by zero");
+	}
 	return (m_sin(x) / m_cos(x));
 }
 
 double m_ctg(double x) {
 	if (abs(x) >= M_PI) {
 		throw std::invalid_argument("The value is invalid");
+	}
+	if (m_sin(x) == 0) {
+		throw std::logic_error("division by zero");
 	}
 	return (m_cos(x) / m_sin(x));
 }
