@@ -17,6 +17,7 @@ add_subdirectory(lib_labirint)
 add_subdirectory(lib_example) 
 add_subdirectory(lib_queue) 
 add_subdirectory(lib_binarytree) 
+add_subdirectory(rbtree) 
 add_subdirectory(lib_pr2)   # подключаем дополнительный CMakeLists.txt из подкаталога с именем lib_example
 add_subdirectory(main)           # подключаем дополнительный CMakeLists.txt из подкаталога с именем main
 option(BTEST "build test?" ON)   # указываем подключаем ли google-тесты (ON или YES) или нет (OFF или NO)
