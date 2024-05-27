@@ -11,7 +11,6 @@ using std::max;
 using std::cout;
 using std::endl;
 
-// Структура Node представляет узел бинарного дерева
 struct Node {
     int data;
     Node* left;
@@ -19,7 +18,7 @@ struct Node {
     explicit Node(int value) : data(value), left(nullptr), right(nullptr) {}
 };
 
-// Функция для создания узла с указанным значением и дочерними узлами
+
 Node* create(int value, Node* l = nullptr, Node* r = nullptr) {
     Node* node = new Node(value);
     node->left = l;
@@ -33,7 +32,6 @@ class BinaryTree {
 public:
     BinaryTree() : root(nullptr) {}
 
-    // Метод для вставки значения в бинарное дерево
     void insert(int value) {
         Node* newNode = new Node(value);
         if (!root) {
@@ -41,7 +39,7 @@ public:
             return;
         }
 
-        TQueue<Node*> q;  // Создаем очередь, содержащую указатели на узлы дерева
+        TQueue<Node*> q;  
         q.push(root);
 
         while (!q.isEmpty()) {
@@ -92,7 +90,7 @@ public:
         Node* curParent = nullptr;
         Node* cur = root;
 
-        // Находим родителя узла, который нужно удалить
+
         while (cur != nullptr && cur != node) {
             curParent = cur;
             if (node->data < cur->data) {
@@ -103,27 +101,27 @@ public:
             }
         }
 
-        if (cur == nullptr) return;  // Узел для удаления не найден
+        if (cur == nullptr) return;  
 
         // Если у узла, который нужно удалить, есть оба дочерних узла
         if (cur->left != nullptr && cur->right != nullptr) {
             Node* parent = cur;
-            Node* swap_tmp = cur->right;  // Находим крайний левый узел в правом поддереве
+            Node* swap_tmp = cur->right;  
             while (swap_tmp->left != nullptr) {
                 parent = swap_tmp;
                 swap_tmp = swap_tmp->left;
             }
 
-            // Копируем данные из swap_tmp в cur
+
             cur->data = swap_tmp->data;
             cur = swap_tmp;
             curParent = parent;
         }
 
-        // Узел для удаления имеет только один или нет дочерних узлов
+
         Node* child = (cur->left != nullptr) ? cur->left : cur->right;
 
-        // Если узел для удаления имеет только одного потомка или не имеет его
+
         if (curParent == nullptr) {
             root = child;
         }
@@ -142,7 +140,7 @@ public:
         return root;
     }
 
-    // Метод для печати дерева по уровням
+
     void printTreeByLevels(Node* root) {
         if (!root) return;
 
@@ -159,7 +157,7 @@ public:
                 q.pop();
                 levelNodes.push_back(currentNode->data);
 
-                // Добавляем дочерние узлы в очередь
+
                 if (currentNode->left) {
                     q.push(currentNode->left);
                 }
@@ -206,17 +204,17 @@ public:
         dfsPostOrderRec(root, func);
     }
 
-    // Метод для получения высоты дерева
+
     int height() {
         return heightRec(root);
     }
 
-    // Метод для получения уровня узла
+
     int getLevel(Node* node) {
         return getLevelRec(root, node, 1);
     }
 
-    // Метод для получения размера дерева
+
     int size() {
         return sizeRec(root);
     }
@@ -244,7 +242,7 @@ private:
         func(node);
     }
 
-    //функция для вычисления высоты дерева
+
     int heightRec(Node* node) {
         if (node == nullptr) {
             return 0;
@@ -254,7 +252,7 @@ private:
         return max(leftHeight, rightHeight) + 1;
     }
 
-    //функция для получения уровня узла
+
     int getLevelRec(Node* current, Node* target, int level) {
         if (current == nullptr) {
             return 0;
@@ -269,7 +267,7 @@ private:
         return getLevelRec(current->right, target, level + 1);
     }
 
-    //функция для вычисления размера дерева
+
     int sizeRec(Node* node) {
         if (node == nullptr) {
             return 0;
