@@ -84,55 +84,71 @@ public:
     }
 
     // ћетод дл€ удалени€ узла
+    // ћетод дл€ удалени€ узла
     void remove(Node* node) {
-        if (root == nullptr || node == nullptr) return;
+        // ≈сли дерево пусто или удал€емый узел равен nullptr, просто возвращаемс€.
+        if (!root || !node) return;
 
-        Node* curParent = nullptr;
-        Node* cur = root;
+        // —пециальный случай: если дерево состоит из одного узла, и это корневой узел,
+        // то удал€ем корень и устанавливаем root в nullptr.
+        if (root == node && !root->left && !root->right) {
+            delete root;
+            root = nullptr;
+            return;
+        }
 
+        // »спользуем BFS дл€ нахождени€ самого правого узла и его родител€
+        TQueue<Node*> q;
+        q.push(root);
+        Node* rightmost = nullptr;         // ”казатель на самый правый узел
+        Node* rightmostParent = nullptr;   // ”казатель на родител€ самого правого узла
+        Node* targetParent = nullptr;      // ”казатель на родител€ удал€емого узла
 
-        while (cur != nullptr && cur != node) {
-            curParent = cur;
-            if (node->data < cur->data) {
-                cur = cur->left;
+        while (!q.isEmpty()) {
+            Node* current = q.front();
+            q.pop();
+
+            // ѕровер€ем левый потомок текущего узла
+            if (current->left) {
+                rightmostParent = current;  // –одитель текущего левого потомка становитс€ текущим узлом
+                q.push(current->left);
+            }
+
+            // ѕровер€ем правый потомок текущего узла
+            if (current->right) {
+                rightmostParent = current;  // –одитель текущего правого потомка становитс€ текущим узлом
+                q.push(current->right);
+            }
+
+            // ќпредел€ем родител€ узла, который нужно удалить
+            if (current->left && current->left == node) {
+                targetParent = current;
+            }
+            else if (current->right && current->right == node) {
+                targetParent = current;
+            }
+
+            // ќбновл€ем указатель на самый правый узел
+            rightmost = current;
+        }
+
+        // «амен€ем данные удал€емого узла данными самого правого узла
+        if (rightmost != node) {
+            node->data = rightmost->data;
+        }
+
+        // ”дал€ем самый правый узел
+        if (rightmostParent) {
+            if (rightmostParent->right == rightmost) {
+                rightmostParent->right = nullptr;
             }
             else {
-                cur = cur->right;
+                rightmostParent->left = nullptr;
             }
         }
 
-        if (cur == nullptr) return;  
-
-        // ≈сли у узла, который нужно удалить, есть оба дочерних узла
-        if (cur->left != nullptr && cur->right != nullptr) {
-            Node* parent = cur;
-            Node* swap_tmp = cur->right;  
-            while (swap_tmp->left != nullptr) {
-                parent = swap_tmp;
-                swap_tmp = swap_tmp->left;
-            }
-
-
-            cur->data = swap_tmp->data;
-            cur = swap_tmp;
-            curParent = parent;
-        }
-
-
-        Node* child = (cur->left != nullptr) ? cur->left : cur->right;
-
-
-        if (curParent == nullptr) {
-            root = child;
-        }
-        else if (curParent->left == cur) {
-            curParent->left = child;
-        }
-        else {
-            curParent->right = child;
-        }
-
-        delete cur;
+        // ќсвобождаем пам€ть, зан€тую самым правым узлом
+        delete rightmost;
     }
 
     // ћетод дл€ получени€ корн€ дерева
